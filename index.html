@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seettu Tracker Member</title>
+  <link rel="stylesheet" href="CSS/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="icons/icon-192.ico">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Header -->
+<div class="header">
+  <img class="logo" src="icons/Logo.png" alt="Logo">
+
+  <div class="dropdown">
+    <button class="dropbtn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+    <div class="dropdown-content">
+      <a href="list.html"><i class="fa-solid fa-list"></i>Active Seettu</a>
+      <a href="about.html"><i class="fa-solid fa-info"></i>About</a>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- ID Input -->
+<div class="token-box">
+  <input type="text" id="tokenInput" placeholder="Enter Admin ID (ex: John-3254)">
+  <button id="loadBtn"><i class="fa-solid fa-search"></i> </button>
+  <button id="clearBtn" class="clear-btn token-box-clear"><i class="fa-solid fa-xmark"></i></button>
+</div>
+
+
+  <!-- Info Bar -->
+  <div class="info">
+    <span><i class="fa-regular fa-calendar"></i> <span id="planFrequency">-</span></span>
+    <span><i class="fa-solid fa-users"></i> <span id="planPeople">-</span></span>
+    <span><i class="fa-solid fa-coins"></i> <span id="planAmount">-</span></span>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-controls">
+    <button id="prevRound" class="nav-btn"><i class="fa-solid fa-caret-left"></i></button>
+    <span id="currentDate">-</span>
+    <button id="nextRound" class="nav-btn"><i class="fa-solid fa-caret-right"></i></button>
+  </div>
+
+  <!-- Dynamic Content -->
+  <div id="tabContent"></div>
+
+  <script src="JS/script.js"></script>
+
+<script>
+  const dropBtn = document.querySelector(".dropbtn");
+  const dropdownContent = document.querySelector(".dropdown-content");
+
+  dropBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdownContent.style.display =
+      dropdownContent.style.display === "block" ? "none" : "block";
+  });
+
+  document.addEventListener("click", () => {
+    dropdownContent.style.display = "none";
+  });
+</script>
+<script>
+  document.getElementById("viewSeettuBtn").addEventListener("click", () => {
+    window.location.href = "list.html";
+  });
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("sw.js")
+      .then((reg) => console.log("Service worker registered.", reg))
+      .catch((err) => console.log("Service worker not registered.", err));
+  });
+}
+
+</script>
+</body>
+</html>
