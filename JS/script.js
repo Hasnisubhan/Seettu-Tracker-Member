@@ -32,7 +32,7 @@ document.getElementById("clearBtn").addEventListener("click", () => {
 });
 
 async function loadData(adminId) {
-  const gistId = "c71c02db07cf009893bd4e81066627db"; // your gist ID
+  const gistId = "38bc71bdc998169563fd4b7e47e159b8"; // your gist ID
   const filename = `${adminId}.json`; // each admin has their own file
 
   try {
@@ -162,4 +162,5 @@ function updateNavButtons() {
     }
   };
 }
+
 
