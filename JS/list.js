@@ -1,4 +1,4 @@
-const API_BASE = "https://seettu-api.vercel.app";
+const API_BASE = "https://seettu-tracker-admin.vercel.app/";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const listElement = document.getElementById("adminList");
@@ -29,3 +29,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     listElement.innerHTML = "<p>❌ Failed to load list.</p>";
   }
 });
+
