@@ -1,34 +1,36 @@
-const API_BASE = "https://seettu-tracker-admin.vercel.app";
-
 document.addEventListener("DOMContentLoaded", async () => {
+  const gistId = "3c6ebf8ec01e1716d8c16321aae48093"; // your gist ID
   const listElement = document.getElementById("adminList");
-  listElement.innerHTML = "<p>⏳ Loading accounts...</p>";
 
   try {
-    const res = await fetch(`${API_BASE}/api/get?list=all`);
-    const data = await res.json();
+    const res = await fetch(`https://api.github.com/gists/${gistId}`);
+    const gist = await res.json();
 
-    if (!res.ok || !Array.isArray(data) || data.length === 0) {
-      listElement.innerHTML = "<p>⚠️ No Seettu accounts found.</p>";
+    const files = Object.keys(gist.files);
+
+    // Show only admin JSON files (ignore others like README, etc.)
+    const adminFiles = files.filter(f => f.endsWith(".json"));
+
+    if (adminFiles.length === 0) {
+      listElement.innerHTML = "<p>No Seettu accounts found.</p>";
       return;
     }
 
-    listElement.innerHTML = ""; // clear loading message
-
-    data.forEach(adminId => {
+    adminFiles.forEach(file => {
+      const adminId = file.replace(".json", "");
       const li = document.createElement("li");
       li.textContent = adminId;
       li.className = "admin-item";
 
       li.addEventListener("click", () => {
-        localStorage.setItem("viewerAdminId", adminId);
-        window.location.href = "index.html";
+        localStorage.setItem("viewerAdminId", adminId); // save selected ID
+        window.location.href = "index.html"; // go back to viewer page
       });
 
       listElement.appendChild(li);
     });
   } catch (err) {
-    console.error("Failed to fetch list:", err);
-    listElement.innerHTML = "<p>❌ Failed to load list. Please try again.</p>";
+    console.error("Failed to fetch gist:", err);
+    listElement.innerHTML = "<p>❌ Failed to load list.</p>";
   }
 });
