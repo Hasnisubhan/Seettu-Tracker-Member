@@ -1,4 +1,4 @@
-const API_BASE = "https://seettu-tracker-admin.vercel.app/";
+const API_BASE = "https://seettu-tracker-admin.vercel.app";
 let plan, members, payments, currentRound = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("loadBtn").addEventListener("click", () => {
   const id = document.getElementById("tokenInput").value.trim();
   if (!id) {
-    alert("Please enter an Admin ID!");
+    alert("⚠️ Please enter an Admin ID!");
     return;
   }
   localStorage.setItem("viewerAdminId", id);
@@ -22,20 +22,19 @@ document.getElementById("loadBtn").addEventListener("click", () => {
 document.getElementById("clearBtn").addEventListener("click", () => {
   localStorage.removeItem("viewerAdminId");
   document.getElementById("tokenInput").value = "";
-  document.getElementById("tabContent").innerHTML = "<p>No data loaded.</p>";
-  document.getElementById("planFrequency").textContent = "-";
-  document.getElementById("planPeople").textContent = "-";
-  document.getElementById("planAmount").textContent = "-";
-  document.getElementById("currentDate").textContent = "-";
+  resetDisplay();
 });
 
 async function loadData(adminId) {
+  const tabContent = document.getElementById("tabContent");
+  tabContent.innerHTML = "<p>⏳ Loading data...</p>";
+
   try {
     const res = await fetch(`${API_BASE}/api/get?adminId=${adminId}`);
     const data = await res.json();
 
-    if (data.error) {
-      alert("❌ Admin ID not found.");
+    if (!res.ok || data.error) {
+      tabContent.innerHTML = "<p>❌ Admin ID not found.</p>";
       return;
     }
 
@@ -47,15 +46,22 @@ async function loadData(adminId) {
     showRound(currentRound);
     updateNavButtons();
 
-    document.getElementById("planFrequency").textContent = plan.frequency;
-    document.getElementById("planPeople").textContent = plan.peopleCount;
+    document.getElementById("planFrequency").textContent = plan.frequency || "-";
+    document.getElementById("planPeople").textContent = plan.peopleCount || "-";
     document.getElementById("planAmount").textContent =
-      plan.totalAmount.toLocaleString() + "/=";
+      plan.totalAmount ? plan.totalAmount.toLocaleString() + "/=" : "-";
   } catch (err) {
-    alert("❌ Failed to load data");
-    console.error(err);
+    console.error("Load failed:", err);
+    tabContent.innerHTML = "<p>❌ Failed to load data. Please try again.</p>";
   }
 }
 
-// keep your getRoundForToday(), showRound(), updateNavButtons() functions as before
+function resetDisplay() {
+  document.getElementById("tabContent").innerHTML = "<p>No data loaded.</p>";
+  document.getElementById("planFrequency").textContent = "-";
+  document.getElementById("planPeople").textContent = "-";
+  document.getElementById("planAmount").textContent = "-";
+  document.getElementById("currentDate").textContent = "-";
+}
 
+// keep your existing functions: getRoundForToday(), showRound(), updateNavButtons()
