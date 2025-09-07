@@ -1,4 +1,4 @@
-const API_BASE = "https://your-admin.vercel.app";
+const API_BASE = "https://seettu-tracker-admin.vercel.app/";
 let plan, members, payments, currentRound = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -58,3 +58,4 @@ async function loadData(adminId) {
 }
 
 // keep your getRoundForToday(), showRound(), updateNavButtons() functions as before
+
